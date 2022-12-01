@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -31,17 +33,14 @@ func main() {
 		elfSlice[len(elfSlice)-1] = append(elfSlice[len(elfSlice)-1], cals)
 	}
 
-	mostCal := 0
-	elfWithMostCalIndex := 0
-	for index, elf := range elfSlice {
+	totalElfCal := []int{}
+	for _, elf := range elfSlice {
 		cal := countAllCal(elf)
-		if cal > mostCal {
-			mostCal = cal
-			elfWithMostCalIndex = index
-		}
+		totalElfCal = append(totalElfCal, cal)
 	}
-	println(mostCal)
-	println(elfWithMostCalIndex)
+
+	sort.Ints(totalElfCal)
+	fmt.Println(totalElfCal[len(totalElfCal)-3:])
 }
 
 func countAllCal(elf []int) int {
