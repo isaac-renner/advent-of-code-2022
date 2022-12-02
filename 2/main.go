@@ -36,8 +36,9 @@ func main() {
 		choices := strings.Split(round, " ")
 		opChoice := choices[0]
 		myChoice := choices[1]
-		totalScore += scoreFromOutcome(myChoice, opChoice)
-		totalScore += scoreFromChoice(myChoice)
+		score, outcome := getChoiceAndOutcome(myChoice, opChoice)
+		totalScore += score
+		totalScore += scoreFromChoice(outcome)
 	}
 
 	fmt.Println(totalScore)
@@ -47,6 +48,54 @@ func scoreFromChoice(myChoice string) int {
 	score := choiceScoreMap[myChoice]
 
 	return score
+}
+
+var drawMap = map[string]string{
+	"A": "X",
+	"B": "Y",
+	"C": "Z",
+}
+
+var winMap = map[string]string{
+	"A": "Y",
+	"B": "Z",
+	"C": "X",
+}
+
+var loseMap = map[string]string{
+	"A": "Z",
+	"B": "X",
+	"C": "Y",
+}
+
+func getChoiceAndOutcome(myChoice string, opChoice string) (int, string) {
+	newDec := getChoice(myChoice, opChoice)
+
+	if myChoice == "X" {
+		return 0, newDec
+	}
+
+	if myChoice == "Z" {
+		return 6, newDec
+	}
+
+	return 3, newDec
+}
+
+func getChoice(myChoice string, opChoice string) string {
+	if myChoice == "Y" {
+		return drawMap[opChoice]
+	}
+
+	if myChoice == "X" {
+		return loseMap[opChoice]
+	}
+
+	if myChoice == "Z" {
+		return winMap[opChoice]
+	}
+
+	panic("something went wrong")
 }
 
 func scoreFromOutcome(myChoice string, opChoice string) int {
