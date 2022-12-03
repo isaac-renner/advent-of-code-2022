@@ -19,9 +19,13 @@ func main() {
 	for _, round := range strings.Split(fileAsString, "\n") {
 		agg = append(agg, round)
 
-		middle := len(round) / 2
-		first := round[:middle]
-		second := round[middle:]
+		if len(agg) < 3 {
+			continue
+		}
+
+		first := agg[0]
+		second := agg[1]
+		third := agg[2]
 		if round == "" {
 			continue
 		}
@@ -29,11 +33,15 @@ func main() {
 		var matchingLetter rune
 		for _, letter := range first {
 			if strings.IndexRune(second, letter) != -1 {
-				matchingLetter = letter
-				break
+				if strings.IndexRune(third, letter) != -1 {
+					matchingLetter = letter
+				}
 			}
 		}
+
+		fmt.Println(int(getScore(matchingLetter)), agg)
 		values += int(getScore(matchingLetter))
+		agg = []string{}
 	}
 	fmt.Println(values)
 
